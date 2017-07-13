@@ -60,6 +60,7 @@ bool readMessage(int messageId, char *payload)
     latLong.add(latitude);
     latLong.add(longitude);
     root["ip"] = ipAddress;
+    root["timestamp"] = epochTime;
     bool temperatureAlert = false;
 
     // NAN is not the valid json, change it to NULL

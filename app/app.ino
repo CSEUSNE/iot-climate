@@ -13,6 +13,7 @@
 
 #include "config.h"
 
+time_t epochTime;
 static bool messagePending = false;
 static bool messageSending = true;
 
@@ -53,7 +54,7 @@ void initWifi()
 
 void initTime()
 {
-    time_t epochTime;
+    
     configTime(0, 0, "pool.ntp.org", "time.nist.gov");
 
     while (true)
