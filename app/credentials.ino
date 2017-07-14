@@ -6,16 +6,19 @@ void readCredentials()
     int ssidAddr = 0;
     int passAddr = ssidAddr + SSID_LEN;
     int connectionStringAddr = passAddr + SSID_LEN;
-
+    int deviceIDAddr = connectionStringAddr + SSID_LEN;
+  
     // malloc for parameters
     ssid = (char *)malloc(SSID_LEN);
     pass = (char *)malloc(PASS_LEN);
     connectionString = (char *)malloc(CONNECTION_STRING_LEN);
+    devID = (char *)malloc(DEVID_LEN);
 
     // try to read out the credential information, if failed, the length should be 0.
     int ssidLength = EEPROMread(ssidAddr, ssid);
     int passLength = EEPROMread(passAddr, pass);
     int connectionStringLength = EEPROMread(connectionStringAddr, connectionString);
+    int devIDLength = EEPROMread(deviceIDAddr, devID);
 
     if (ssidLength > 0 && passLength > 0 && connectionStringLength > 0 && !needEraseEEPROM())
     {
@@ -30,7 +33,27 @@ void readCredentials()
     EEPROMWrite(passAddr, pass, strlen(pass));
 
     readFromSerial("Input your Azure IoT hub device connection string: ", connectionString, CONNECTION_STRING_LEN, 0);
+    
+
+    /*Find the actual Device ID*/
+    //std::string castConnectStr(connectionString);
+    String castConnectStr = String(connectionString);
+    String findstr = "DeviceId=";
+    int startPos = castConnectStr.indexOf(findstr);
+    Serial.print("found string at ");
+    Serial.println(startPos);
+    int endPos = castConnectStr.indexOf(";", startPos);
+    Serial.print("found semicolon at ");
+    Serial.println(endPos);
+    String actualDevID = castConnectStr.substring(startPos + findstr.length(), endPos);
+    Serial.print("substring is ");
+    Serial.println(actualDevID);
+    char* charConvert = (char *)malloc(DEVID_LEN);
+    actualDevID.toCharArray(charConvert, DEVID_LEN);
+
     EEPROMWrite(connectionStringAddr, connectionString, strlen(connectionString));
+    EEPROMWrite(deviceIDAddr, charConvert, DEVID_LEN);
+    
 }
 
 bool needEraseEEPROM()

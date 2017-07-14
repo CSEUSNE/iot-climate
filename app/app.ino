@@ -19,6 +19,7 @@ static bool messageSending = true;
 static char *connectionString;
 static char *ssid;
 static char *pass;
+static char *devID;
 
 static int interval = INTERVAL;
 
@@ -81,6 +82,7 @@ void setup()
     initSerial();
     delay(2000);
     readCredentials();
+    delay(2000);
 
     initWifi();
     initTime();

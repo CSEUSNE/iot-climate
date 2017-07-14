@@ -22,5 +22,6 @@
 #define SSID_LEN 32
 #define PASS_LEN 32
 #define CONNECTION_STRING_LEN 256
+#define DEVID_LEN 128
 
 #define MESSAGE_MAX_LEN 256

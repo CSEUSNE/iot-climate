@@ -53,7 +53,7 @@ bool readMessage(int messageId, char *payload)
     
     StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
     JsonObject &root = jsonBuffer.createObject();
-    root["deviceId"] = DEVICE_ID;
+    root["deviceId"] = devID; 
     root["messageId"] = messageId;
     root["luminosity"] = luminosity;
     JsonArray& latLong = root.createNestedArray("location");
